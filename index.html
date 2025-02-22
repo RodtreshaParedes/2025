@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AMA Library Management System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="images/AMACC logo.jpeg" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Login Screen -->
+    <div class="container" id="loginScreen">
+      <h1>AMA Library</h1>
+      <form id="loginForm">
+        <div class="form-control">
+          <input type="text" id="loginEmail" required name="loginEmail" />
+          <label>Email</label>
+        </div>
+        <div class="form-control">
+          <input
+            type="password"
+            id="loginPassword"
+            required
+            name="loginPassword"
+          />
+          <label>Password</label>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <p id="errorMsg" style="color: red"></p>
+      </form>
+    </div>
+
+    <!-- Dashboard Screen (Hidden by default) -->
+    <div class="dashboard-container" id="dashboard" style="display: none">
+      <header>
+        <a href="#">
+          <img src="images/AMACC logo.jpeg" style="width: 50px; height: 50px" />
+        </a>
+
+        <!-- Group attendance link and logout button together -->
+        <div class="right-links">
+          <a href="attendance.html" id="attendanceLink">Attendance</a>
+          <a href="borrowed_books.html" id="attendanceLink">Borrow/Reserve</a>
+          <button id="logoutButton">Logout</button>
+        </div>
+      </header>
+
+      <nav class="sidebar">
+        <ul>
+          <li>
+            <a href="#" id="dashboardLink"
+              ><i class="fas fa-tachometer-alt"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a href="#" id="bookRecordsLink"
+              ><i class="fas fa-book"></i> Book Records</a
+            >
+          </li>
+          <li>
+            <a href="#" id="studentRecordsLink"
+              ><i class="fas fa-user-graduate"></i> Student Records</a
+            >
+          </li>
+          <!-- <li>
+            <a href="#" id="queriesLink"
+              ><i class="fas fa-question-circle"></i> Queries</a
+            >
+          </li> -->
+          <!-- <li>
+            <a href="#" id="messagesLink"
+              ><i class="fas fa-envelope"></i> Messages</a
+            >
+          </li> -->
+          <li>
+            <a href="#" id="adminSettingsLink"
+              ><i class="fas fa-cogs"></i> Admin Settings</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Main Content Area -->
+      <section class="content" id="contentArea">
+        <h2>Welcome to the Admin Dashboard</h2>
+        <p>Select an option from the sidebar to manage the library.</p>
+
+        <div class="dashboard-overview">
+          <div class="metric">
+            <h3>Total Books</h3>
+            <p id="totalBooks">Loading...</p>
+          </div>
+          <div class="metric">
+            <h3>Active Users</h3>
+            <p id="activeUsers">Loading...</p>
+          </div>
+          <div class="metric">
+            <h3>Overdue Books</h3>
+            <p id="overdueBooks">Loading...</p>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <h3>Recent Activity</h3>
+          <ul id="activityList">
+            <li>No recent activity.</li>
+          </ul>
+        </div>
+        <div class="notifications" id="notificationArea">
+          <h3>Notifications</h3>
+          <ul>
+            <li>No new notifications.</li>
+          </ul>
+        </div>
+
+        <div class="quick-actions">
+          <h3>Quick Actions</h3>
+          <button class="return-book-button" id="returnBookButton">Return a Book</button>
+        </div>
+
+        <!-- Return a Book Modal -->
+        <div id="returnBookModal" class="modal">
+          <div class="return-modal-content">
+            <span class="return-close-button">&times;</span>
+            <h3>Return a Book:</h3>
+            <form id="returnBookForm">
+              <label for="bookTitle">Book Title:</label>
+              <input type="text" id="bookTitle" name="bookTitle" required /><br /><br />
+              <label for="bookTitle">Student ID:</label>
+              <input type="text" id="studentId" name="studentId" required /><br /><br />
+              <label for="returnDate">Return Date:</label>
+              <input type="date" id="returnDate" name="returnDate" required /><br /><br />
+              <button type="submit" class="return-button">Return Book</button>
+            </form>
+          </div>
+        </div>
+
+        
+        <canvas id="libraryStatsChart" width="400" height="200"></canvas>
+      </section>
+
+      <!-- Book Records -->
+      <section class="content" id="bookRecordsSection" style="display: none">
+        <h2>Book Records</h2>
+        <p>
+          Here you can manage book inventory, check status, add, and remove
+          books.
+        </p>
+
+        <button class="add-book-button" id="addBookButton">Add New Book</button>
+
+        <!-- Modal Structure (Book) -->
+        <div id="addBookModal" class="modal">
+          <div class="modal-content-book">
+            <span class="close-button-book">×</span>
+            <h3>Add New Book:</h3>
+            <form id="bookForm">
+              <label for=" title">Book Title:</label>
+              <input type="text" id="title" name="title" /><br /><br />
+              <label for="author">Author:</label>
+              <input type="text" id="author" name="author" /><br /><br />
+              <label for="isbn">ISBN:</label>
+              <input type="text" id="isbn" name="isbn" /><br /><br />
+              <label for="edition">Edition:</label>
+              <input type="text" id="edition" name="edition" /><br /><br />
+              <label for="year">Year:</label>
+              <input type="number" id="year" name="year" /><br /><br />
+              <label for="quantity">Quantity:</label>
+              <input type="number" id="quantity" name="quantity" /><br /><br />
+              <label for="bookImage">Book Image:</label>
+              <input
+                type="file"
+                id="bookImage"
+                name="image"
+                accept="image/*"
+              /><br /><br />
+              <button id="submitBookButton">Add Book</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Current Books -->
+        <div class="book-list" id="bookList">
+          <h3>Current Books:</h3>
+        </div>
+      </section>
+
+      <!-- Book Details -->
+      <section
+        class="content"
+        id="bookDetailsSection"
+        style="
+          display: none;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <h2 style="text-align: center; color: #333">Book Details</h2>
+        <p style="font-size: 16px; color: #555">
+          <strong>Title:</strong>
+          <span id="bookDetailTitle"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Author:</strong>
+          <span id="bookDetailAuthor"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>ISBN:</strong>
+          <span id="bookDetailIsbn"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Edition:</strong>
+          <span id="bookDetailEdition"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Year:</strong>
+          <span id="bookDetailYear"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Quantity:</strong>
+          <span id="bookDetailQuantity"></span>
+        </p>
+        <div style="text-align: center; margin-top: 20px">
+          <img
+            id="bookDetailImage"
+            src=""
+            alt="Book Image"
+            style="
+              width: 200px;
+              height: 300px;
+              border-radius: 8px;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            "
+          />
+        </div>
+      </section>
+
+      <!-- Edit Book Information -->
+      <section class="content" id="editBookSection" style="display: none">
+        <h2 style="text-align: center; color: #333">Edit Book Information</h2>
+        <form id="editBookForm">
+          <input type="hidden" id="originalIsbn" name="originalIsbn" />
+          <!-- Hidden input for storing original ISBN -->
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editTitle" style="display: block; margin-bottom: 5px"
+              >Book Title:</label
+            >
+            <input
+              type="text"
+              id="editTitle"
+              name="title"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editAuthor" style="display: block; margin-bottom: 5px"
+              >Author:</label
+            >
+            <input
+              type="text"
+              id="editAuthor"
+              name="author"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editISBN" style="display: block; margin-bottom: 5px"
+              >ISBN:</label
+            >
+            <input
+              type="text"
+              id="editISBN"
+              name="isbn"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editEdition" style="display: block; margin-bottom: 5px"
+              >Edition:</label
+            >
+            <input
+              type="text"
+              id="editEdition"
+              name="edition"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editYear" style="display: block; margin-bottom: 5px"
+              >Year:</label
+            >
+            <input
+              type="text"
+              id="editYear"
+              name="year"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editISBN" style="display: block; margin-bottom: 5px"
+              >Quantity:</label
+            >
+            <input
+              type="number"
+              id="editQuantity"
+              name="quantity"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="currentBookImage" style="display: block; margin-bottom: 5px">Current Book Image:</label>
+            <img id="currentBookImage" src="" alt="Current Book Image" style="width: 200px; height: auto; margin-bottom: 10px;" />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+              <label for="editBookImage" style="display: block; margin-bottom: 5px">Upload New Image:</label>
+              <input type="file" id="editBookImage" name="bookImage" accept="image/*" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;" />
+          </div>
+          <div style="text-align: center">
+            <button
+              type="submit"
+              style="
+                padding: 10px 20px;
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+              "
+            >
+              Save Changes
+            </button>
+            <button
+              type="button"
+              class="cancel-book-edit-button"
+              style="
+                padding: 10px 20px;
+                background-color: #f44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-left: 10px;
+              "
+              onclick="hideAllSections(); document.getElementById('bookRecordsSection').style.display = 'block';"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Student Records -->
+      <section class="content" id="studentRecordsSection" style="display: none">
+        <h2>Student Records</h2>
+        <p>
+          Manage student information, borrowing records, and account status
+          here.
+        </p>
+        <!-- Add New Student Button -->
+        <button class="add-student-button">Add New Student</button>
+
+        <!-- Modal Structure (Student) -->
+        <div id="addStudentModal" class="modal">
+          <div class="modal-content">
+            <span class="close-button-student">×</span>
+            <h3>Add New Student:</h3>
+            <form id="studentForm">
+              <label for="firstName">First Name:</label>
+              <input type="text" id="firstName" name="firstName" /><br /><br />
+              <label for="lastName">Last Name:</label>
+              <input type="text" id="lastName" name="lastName" /><br /><br />
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email" /><br /><br />
+              <label for="idNumber">ID Number:</label>
+              <input type="number" id="idNumber" name="idNumber" /><br /><br />
+              <label for="idNumber">Contact Number:</label>
+              <input
+                type="number"
+                id="contactNumber"
+                name="contactNumber"
+              /><br /><br />
+              <label for="idNumber">Address:</label>
+              <input type="text" id="address" name="address" /><br /><br />
+              <label for="idNumber">Password</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+              /><br /><br />
+              <button id="submitStudentButton">Add Student</button>
+            </form>
+          </div>
+        </div>
+        <!-- Current Students -->
+        <div class="student-list" id="studentList">
+          <h3>Current Students:</h3>
+        </div>
+      </section>
+
+      <!-- Student Details -->
+      <section
+        class="content"
+        id="studentDetailsSection"
+        style="
+          display: none;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <h2 style="text-align: center; color: #333">Student Details</h2>
+        <p style="font-size: 16px; color: #555">
+          <strong>Name:</strong>
+          <span id="studentDetailName"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Student ID:</strong>
+          <span id="studentDetailId"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Email:</strong>
+          <span id="studentDetailEmail"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Contact Number:</strong>
+          <span id="studentDetailContact"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Address:</strong>
+          <span id="studentDetailAddress"></span>
+        </p>
+        <p style="font-size: 16px; color: #555">
+          <strong>Password:</strong>
+          <span id="studentDetailPassword"></span>
+        </p>
+
+        <!-- Student Attendance Info -->
+        <div
+          class="student-attendance-info table-wrapper"
+          style="margin-top: 20px"
+        >
+          <h3 style="color: #333">Attendance Info</h3>
+          <table
+            style="width: 100%; border-collapse: collapse; margin-top: 10px"
+          >
+            <thead>
+              <tr style="background-color: #f2f2f2">
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Date
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Time In
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Time Out
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd">
+                  2023-02-15
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd">08:00 AM</td>
+                <td style="padding: 10px; border: 1px solid #ddd">12:00 PM</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd">
+                  2023-02-16
+                </td>
+                <td style="padding: 10px; border: 1px solid #ddd">09:00 AM</td>
+                <td style="padding: 10px; border: 1px solid #ddd">11:00 AM</td>
+              </tr>
+            </tbody>
+          </table>
+          <p style="margin: 20px 0; font-size: 16px; color: #555">
+            Total Attendance: <span id="totalAttendance">2</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Student Borrowing Info -->
+      <!-- Updated Student Borrowing Info Section -->
+      <section
+        class="content"
+        id="studentBorrowedBooksSection"
+        style="
+          display: none;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <div
+          class="student-borrowing-info table-wrapper"
+          style="margin-top: 20px"
+        >
+          <h3 style="color: #333">Borrowing and Reservation Info</h3>
+          <table
+            style="width: 100%; border-collapse: collapse; margin-top: 10px"
+          >
+            <thead>
+              <tr style="background-color: #f2f2f2">
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Book Title
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Borrowed/Reserved
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Start Date
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Due Date
+                </th>
+                <th
+                  style="
+                    padding: 10px;
+                    border: 1px solid #ddd;
+                    text-align: left;
+                  "
+                >
+                  Return Date
+                </th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+          <p style="margin: 20px 0; font-size: 16px; color: #555">
+            Total Books Borrowed: <span id="totalBorrowed">0</span>
+          </p>
+          <p style="margin: 20px 0; font-size: 16px; color: #555">
+            Total Books Reserved: <span id="totalReserved">0</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Edit Student Information -->
+      <section
+        class="content"
+        id="editStudentSection"
+        style="
+          display: none;
+          padding: 20px;
+          background-color: #f9f9f9;
+          border-radius: 8px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        "
+      >
+        <h2 style="text-align: center; color: #333">
+          Edit Student Information
+        </h2>
+        <form id="editStudentForm" method="post">
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label
+              for="editFirstName"
+              style="display: block; margin-bottom: 5px"
+              >First Name:</label
+            >
+            <input
+              type="text"
+              id="editFirstName"
+              name="editFirstName"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editLastName" style="display: block; margin-bottom: 5px"
+              >Last Name:</label
+            >
+            <input
+              type="text"
+              id="editLastName"
+              name="editLastName"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editIdNumber" style="display: block; margin-bottom: 5px"
+              >ID Number:</label
+            >
+            <input
+              type="text"
+              id="editIdNumber"
+              name="editIdNumber"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label
+              for="editContactNumber"
+              style="display: block; margin-bottom: 5px"
+              >Contact Number:</label
+            >
+            <input
+              type="text"
+              id="editContactNumber"
+              name="editContactNumber"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editEmail" style="display: block; margin-bottom: 5px"
+              >Email:</label
+            >
+            <input
+              type="email"
+              id="editEmail"
+              name="editEmail"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editAddress" style="display: block; margin-bottom: 5px"
+              >Address:</label
+            >
+            <input
+              type="text"
+              id="editAddress"
+              name="editAddress"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <div class="form-control-section" style="margin-bottom: 15px">
+            <label for="editPassword" style="display: block; margin-bottom: 5px"
+              >Password:</label
+            >
+            <input
+              type="password"
+              id="editPassword"
+              name="editPassword"
+              style="
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+              "
+            />
+          </div>
+          <!-- Hidden input to store the original ID -->
+          <input type="hidden" id="originalId" name="originalId" />
+          <div style="text-align: center">
+            <button
+              type="submit"
+              style="
+                padding: 10px 20px;
+                background-color: #4caf50;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+              "
+            >
+              Save Changes
+            </button>
+            <button
+              class="cancel-edit-button"
+              style="
+                padding: 10px 20px;
+                background-color: #f44336;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                margin-left: 10px;
+              "
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Queries -->
+      <section class="content" id="queriesSection" style="display: none">
+        <h2>Queries</h2>
+        <p>
+          Respond to user queries and handle library-related questions here.
+        </p>
+        <div class="query-list" id="queryList">
+          <h3>User Queries:</h3>
+          <ul>
+            <li>No queries available.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Messages -->
+      <section class="content" id="messagesSection" style="display: none">
+        <h2>Messages</h2>
+        <p>View and manage internal and external messages.</p>
+        <div class="message-list" id="messageList">
+          <h3>Messages:</h3>
+          <ul>
+            <li>No messages available.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Admin Settings -->
+      <section class="content" id="adminSettingsSection" style="display: none">
+        <div class="admin-settings-header">
+          <h2>Admin Settings</h2>
+          <button id="registerUserButton" class="btn">
+            <span>Register New User</span>
+          </button>
+        </div>
+        <p>Configure system settings, user roles, and other administrative tasks.</p>
+        <!-- User List -->
+        <div class="user-list" id="userList">
+          <!-- User cards will be added here -->
+        </div>
+        <!-- Registration Modal -->
+        <div id="registerModal" class="modal">
+          <div class="modal-content-register">
+            <span class="close-button-register">×</span>
+            <h3>Register New User:</h3>
+            <form id="registerForm">
+              <label for="registerEmail">Email:</label>
+              <input type="email" id="registerEmail" name="registerEmail" required />
+              <br /><br />
+              <label for="registerPassword">Password:</label>
+              <input
+                type="password"
+                id="registerPassword"
+                name="registerPassword"
+                required
+              />
+              <br /><br />
+              <label for="registerRole">User Role:</label>
+              <select id="registerRole" name="registerRole" required>
+                <option value="assistant">Assistant</option>
+                <option value="librarian">Librarian</option>
+                <option value="admin">Admin</option>
+              </select>
+              <br /><br />
+              <button type="submit" id="registerSubmitButton">Register</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    <!-- Add Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

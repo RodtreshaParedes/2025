@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attendance | AMACC - Lipa</title>
+    <link rel="stylesheet" href="attendance.css" />
+    <link rel="icon" href="images/AMACC logo.jpeg" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html"><img src="images/AMACC logo.jpeg" alt="Logo" /></a>
+      </div>
+      <div>
+        <a
+          href="attendance.html"
+          class="attendance-link"
+          style="text-decoration: none; color: black"
+          >Attendance</a
+        >
+        <a
+          href="borrowed_books.html"
+          class="attendance-link"
+          style="text-decoration: none; color: black"
+          >Borrow/Reserve</a
+        >
+        <!-- <button class="signout-button" id="signout-btn">Sign Out</button> -->
+      </div>
+    </nav>
+
+    <div class="attendance-container">
+      <h2>Attendance Record</h2>
+
+      <div class="clock-container">
+        <span class="current-time" id="current-time"
+          >Time: <span id="current-date"></span> <span id="current-clock"></span
+        ></span>
+      </div>
+
+      <div class="buttons">
+        <button class="btn" id="time-in-btn">Time In</button>
+        <button class="btn" id="time-out-btn">Time Out</button>
+      </div>
+
+      <div class="attendance-records">
+        <h3>Attendance Records:</h3>
+        <table id="attendance-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Date</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+            </tr>
+          </thead>
+
+          <tbody id="attendance-records-body">
+            <!-- Records will be dynamically added here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="attendance.js"></script>
+  </body>
+</html>

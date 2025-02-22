@@ -1,0 +1,166 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* background-image: url(images/library.jpg); */
+    background-size: cover;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: hsl(0, 0%, 100%);
+    padding: 10px 20px;
+    box-shadow: 1px 0px 18px 2px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 1px 0px 18px 2px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 1px 0px 18px 2px rgba(0, 0, 0, 0.75);
+    margin-bottom: 20px;
+}
+
+.navbar .logo img {
+    height: 40px;
+}
+
+.navbar .signout-button {
+    background-color: #8e0404;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.navbar .signout-button:hover {
+    background-color: #8e0404;
+}
+
+.attendance-link {
+    margin: 0px 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.book {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 20px 20%;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.book img {
+    width: 30%;
+    height: auto;
+    margin-left: 20px;
+}
+
+.book:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.author,
+.isbn {
+    font-size: 1em;
+    color: #666;
+}
+
+.buttons {
+    margin-top: 10px;
+}
+
+.buttons button {
+    padding: 10px 15px;
+    margin-right: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.buttons button:hover {
+    background-color: #0056b3;
+}
+
+.confirm-button {
+    background-color: #8e0404;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 6px;
+    grid-row: span 3;
+    margin-top: 20px;
+}
+
+.date-picker {
+    display: none;
+    flex-direction: column;
+}
+
+.date-picker label {
+    margin-top: 20px;
+}
+
+.date-picker input {
+    width: 200px;
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    outline: none
+}
+
+.date-picker label,
+.date-picker input,
+.date-picker .confirm-button {
+    display: block;
+    margin-bottom: 10px;
+}
+
+/* Add styles for the search bar */
+.search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+#search-bar {
+    width: 60%;
+    padding: 10px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#search-button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
+}

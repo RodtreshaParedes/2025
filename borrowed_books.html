@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Page | AMACC - Lipa</title>
+    <link rel="icon" href="images/AMACC logo.jpeg" />
+    <link rel="stylesheet" href="borrowed_books.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/AMACC logo.jpeg" alt="Logo" />
+        </a>
+      </div>
+      <div>
+        <a
+          href="attendance.html"
+          class="attendance-link"
+          style="text-decoration: none; color: black"
+          >Attendance</a
+        >
+        <a
+          href="borrowed_books.html"
+          class="attendance-link"
+          style="text-decoration: none; color: black"
+          >Borrow/Reserve</a
+        >
+      </div>
+    </nav>
+
+    <!-- Search bar -->
+    <div class="search-container">
+      <input type="text" id="search-bar" placeholder="Search for books..." />
+      <button id="search-button">Search</button>
+    </div>
+
+    <h1 id="search-title"></h1>
+
+    <div id="book-list"></div>
+
+    <!-- Add Axios CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="borrowed_books.js"></script>
+  </body>
+</html>
